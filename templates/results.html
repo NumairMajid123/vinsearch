@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Market Price Result</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 50px auto;
+      }
+
+      .summary {
+        margin-bottom: 30px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        border: 2px solid black;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Estimated Market Price</h2>
+    <div class="summary">
+      <p><strong>Vehicle:</strong> {{ ymm }}</p>
+      {% if mileage %}
+      <p><strong>Mileage (user input):</strong> {{ mileage }}</p>
+      {% endif %}
+      <p><strong>Estimated Price:</strong> ${{ estimated_price }}</p>
+    </div>
+
+    <h3>Sample Listings ({{ listings|length }})</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Price</th>
+          <th>Mileage</th>
+          <th>Location</th>
+          <th>VIN</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for listing in listings %}
+        <tr>
+          <td>{{ listing.vehicle }}</td>
+          <td>
+            {% if listing.price is not none %} ${{ "{:,}".format(listing.price |
+            int) }} {% else %} - {% endif %}
+          </td>
+          <td>
+            {% if listing.mileage is not none %} {{
+            "{:,}".format(listing.mileage) }} miles {% else %} - {% endif %}
+          </td>
+          <td>{{ listing.location }}</td>
+          <td>{{ listing.id }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/">← New Search</a>
+  </body>
+</html>
